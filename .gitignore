@@ -17,6 +17,16 @@ data/db/
 *.sqlite
 *.sqlite3
 
+# Large data files
+backend/public/data/cleaned_properties_sanjose.json
+backend/public/data/sanjose_plots.geojson
+backend/public/data/escazu_plots.json
+backend/public/data/cleaned_properties.json
+backend/public/data/cleaned_properties_santaana.json
+data/minimal_properties_sanjose.json
+backend/public/data/db/journal/WiredTigerLog.*
+backend/public/data/db/journal/WiredTigerPreplog.*
+
 # IDE and editor files
 .idea/
 .vscode/
