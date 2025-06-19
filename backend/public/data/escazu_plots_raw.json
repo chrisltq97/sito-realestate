@@ -1,0 +1,194 @@
+{
+  "displayFieldName": "dist",
+  "fieldAliases": {
+    "OBJECTID": "OBJECTID",
+    "dist": "dist",
+    "predio": "predio",
+    "gis": "gis",
+    "plano": "plano",
+    "nivel": "nivel",
+    "altura": "altura",
+    "planta": "planta",
+    "matriz": "matriz",
+    "foto_facha": "foto_facha",
+    "video": "video",
+    "id_finca_m": "id_finca_m",
+    "finca_regi": "finca_regi",
+    "observacio": "observacio",
+    "created_us": "created_us",
+    "created_da": "created_da",
+    "last_edite": "last_edite",
+    "last_edi_1": "last_edi_1",
+    "POINT_X": "POINT_X",
+    "POINT_Y": "POINT_Y",
+    "GlobalID": "GlobalID",
+    "created_user": "created_user",
+    "created_date": "created_date",
+    "last_edited_user": "last_edited_user",
+    "last_edited_date": "last_edited_date",
+    "Shape.STArea()": "Shape.STArea()",
+    "Shape.STLength()": "Shape.STLength()"
+  },
+  "geometryType": "esriGeometryPolygon",
+  "spatialReference": {
+    "wkid": 4326,
+    "latestWkid": 4326
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID"
+    },
+    {
+      "name": "dist",
+      "type": "esriFieldTypeString",
+      "alias": "dist",
+      "length": 2
+    },
+    {
+      "name": "predio",
+      "type": "esriFieldTypeString",
+      "alias": "predio",
+      "length": 10
+    },
+    {
+      "name": "gis",
+      "type": "esriFieldTypeString",
+      "alias": "gis",
+      "length": 10
+    },
+    {
+      "name": "plano",
+      "type": "esriFieldTypeString",
+      "alias": "plano",
+      "length": 12
+    },
+    {
+      "name": "nivel",
+      "type": "esriFieldTypeDouble",
+      "alias": "nivel"
+    },
+    {
+      "name": "altura",
+      "type": "esriFieldTypeDouble",
+      "alias": "altura"
+    },
+    {
+      "name": "planta",
+      "type": "esriFieldTypeInteger",
+      "alias": "planta"
+    },
+    {
+      "name": "matriz",
+      "type": "esriFieldTypeString",
+      "alias": "matriz",
+      "length": 10
+    },
+    {
+      "name": "foto_facha",
+      "type": "esriFieldTypeString",
+      "alias": "foto_facha",
+      "length": 254
+    },
+    {
+      "name": "video",
+      "type": "esriFieldTypeString",
+      "alias": "video",
+      "length": 254
+    },
+    {
+      "name": "id_finca_m",
+      "type": "esriFieldTypeString",
+      "alias": "id_finca_m",
+      "length": 14
+    },
+    {
+      "name": "finca_regi",
+      "type": "esriFieldTypeString",
+      "alias": "finca_regi",
+      "length": 14
+    },
+    {
+      "name": "observacio",
+      "type": "esriFieldTypeString",
+      "alias": "observacio",
+      "length": 254
+    },
+    {
+      "name": "created_us",
+      "type": "esriFieldTypeString",
+      "alias": "created_us",
+      "length": 254
+    },
+    {
+      "name": "created_da",
+      "type": "esriFieldTypeDate",
+      "alias": "created_da",
+      "length": 8
+    },
+    {
+      "name": "last_edite",
+      "type": "esriFieldTypeString",
+      "alias": "last_edite",
+      "length": 254
+    },
+    {
+      "name": "last_edi_1",
+      "type": "esriFieldTypeDate",
+      "alias": "last_edi_1",
+      "length": 8
+    },
+    {
+      "name": "POINT_X",
+      "type": "esriFieldTypeDouble",
+      "alias": "POINT_X"
+    },
+    {
+      "name": "POINT_Y",
+      "type": "esriFieldTypeDouble",
+      "alias": "POINT_Y"
+    },
+    {
+      "name": "GlobalID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GlobalID",
+      "length": 38
+    },
+    {
+      "name": "created_user",
+      "type": "esriFieldTypeString",
+      "alias": "created_user",
+      "length": 255
+    },
+    {
+      "name": "created_date",
+      "type": "esriFieldTypeDate",
+      "alias": "created_date",
+      "length": 8
+    },
+    {
+      "name": "last_edited_user",
+      "type": "esriFieldTypeString",
+      "alias": "last_edited_user",
+      "length": 255
+    },
+    {
+      "name": "last_edited_date",
+      "type": "esriFieldTypeDate",
+      "alias": "last_edited_date",
+      "length": 8
+    },
+    {
+      "name": "Shape.STArea()",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape.STArea()"
+    },
+    {
+      "name": "Shape.STLength()",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape.STLength()"
+    }
+  ],
+  "features": []
+}

@@ -1,0 +1,33 @@
+{
+  "name": "sito-realestate",
+  "version": "1.0.0",
+  "description": "A modern real estate platform for Costa Rica",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/sito-realestate.git"
+  },
+  "keywords": [
+    "real-estate",
+    "costa-rica",
+    "property",
+    "mapbox",
+    "supabase"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

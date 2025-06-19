@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Listing - Sito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/auth.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css' rel='stylesheet'>
+    <style>
+        body { 
+            background: #f5f3ee;
+            margin: 0;
+            padding: 0;
+        }
+        .site-header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #111;
+            margin: 0;
+        }
+        .beta-tag {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .btn-profile {
+            background: none;
+            border: none;
+            color: #111;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .btn-profile:hover {
+            background-color: #f5f3ee;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .page-header {
+            margin-bottom: 3rem;
+            padding-top: 1rem;
+        }
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #111;
+            margin: 0;
+        }
+        .form-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+        .property-search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        .listing-details-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111;
+            margin: 0 0 1.5rem 0;
+        }
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #111;
+            box-shadow: 0 0 0 3px rgba(17,17,17,0.1);
+        }
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        .property-results {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 0 -1.5rem;
+            padding: 0 1.5rem;
+        }
+        .property-item {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .property-item:hover {
+            border-color: #111;
+            background-color: #f9fafb;
+        }
+        .property-item.selected {
+            border-color: #111;
+            background-color: #f8f9fa;
+            border-width: 2px;
+        }
+        .property-item h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: #111;
+        }
+        .property-item p {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .map-container {
+            width: 100%;
+            height: 300px;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #111;
+        }
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #111;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #000;
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #111;
+            border: 1px solid #e5e7eb;
+        }
+        .btn-secondary:hover {
+            background-color: #f5f3ee;
+            border-color: #d1d5db;
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: #fef2f2;
+            border-radius: 6px;
+        }
+        .success-message {
+            color: #059669;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: #f0fdf4;
+            border-radius: 6px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        .status-off-market {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        .status-on-market {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        @media (max-width: 1024px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-section {
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 1.5rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .amenities-section {
+            margin-top: 1.5rem;
+        }
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #374151;
+            cursor: pointer;
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+        }
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+        .alert-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #16a34a;
+        }
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #dc2626;
+        }
+        .alert-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #d97706;
+        }
+        .image-preview-container {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .image-preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .remove-image:hover {
+            background: rgba(220, 38, 38, 1);
+        }
+        .form-help {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <a href="/index.html" class="logo-link">
+                <div class="logo-text">SITO</div>
+                <div class="beta-tag">(BETA)</div>
+            </a>
+            <div class="user-actions">
+                <button class="btn-profile"><i class="fas fa-user"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="page-header">
+        <h1 class="page-title">Create New Listing</h1>
+                    </div>
+
+        <div id="auth-error" class="error-message" style="display: none;">
+            Please log in as a seller to create listings.
+                    </div>
+
+        <div id="listing-form" class="form-container" style="display: none;">
+            <div class="property-search-section">
+                <h2 class="section-title">Select Property</h2>
+                <div class="search-box">
+                    <input type="search" id="property-search" class="search-input" placeholder="Search by ID or address">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div id="property-results" class="property-results">
+                    <div class="no-results">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading properties...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="listing-details-section">
+                <div id="selected-property-preview">
+                    <p class="no-results">Select a property to create a listing</p>
+                </div>
+
+                <div id="map" class="map-container"></div>
+
+                <form id="listing-details-form">
+                    <div class="form-group">
+                        <label class="form-label" for="listing-title">Listing Title</label>
+                        <input type="text" id="listing-title" class="form-input" required>
+                    </div>
+                        
+                        <div class="form-group">
+                        <label class="form-label" for="listing-description">Description</label>
+                        <textarea id="listing-description" class="form-input form-textarea" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                        <label class="form-label" for="listing-price">Price (USD)</label>
+                        <input type="number" id="listing-price" class="form-input" required min="0" step="1000">
+                        </div>
+                        
+                    <div class="form-section">
+                        <h3 class="section-subtitle">Property Images</h3>
+                        <div class="form-group">
+                            <label class="form-label" for="listing-images">Upload Images</label>
+                            <input type="file" id="listing-images" class="form-input" accept="image/*" multiple>
+                            <small class="form-help">Select multiple images to upload (JPG, PNG, GIF)</small>
+                        </div>
+                        <div id="image-preview" class="image-preview-container"></div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-subtitle">Property Features</h3>
+                        <div class="features-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="bedrooms">Bedrooms</label>
+                                <input type="number" id="bedrooms" class="form-input" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="bathrooms">Bathrooms</label>
+                                <input type="number" id="bathrooms" class="form-input" min="0" step="0.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="parking">Parking Spaces</label>
+                                <input type="number" id="parking" class="form-input" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="square-feet">Square Meters (m²)</label>
+                                <input type="number" id="square-feet" class="form-input" min="0" required>
+                            </div>
+                        </div>
+                        <div class="amenities-section">
+                            <label class="form-label">Amenities</label>
+                            <div class="amenities-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="pool">
+                                    Swimming Pool
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="garden">
+                                    Garden
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="security">
+                                    24/7 Security
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="amenities" value="garage">
+                                    Garage
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3 class="section-subtitle">Contact Information</h3>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-name">Contact Name</label>
+                            <input type="text" id="contact-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-phone">Phone Number</label>
+                            <input type="tel" id="contact-phone" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-email">Email</label>
+                            <input type="email" id="contact-email" class="form-input" required>
+                        </div>
+                            <div class="form-group">
+                            <label class="form-label" for="contact-whatsapp">WhatsApp (optional)</label>
+                            <input type="tel" id="contact-whatsapp" class="form-input">
+                        </div>
+                        </div>
+                        
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i>
+                            Create Listing
+                        </button>
+                        <a href="my-listings.html" class="btn btn-secondary">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Sito</h3>
+                <p>Your source of trust for the real estate market.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="map.html">Properties</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@sito.com</p>
+                <p>Phone: +506 1234 5678</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Domus Impresa S.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/init-supabase.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/create-listing.js"></script>
+</body>
+</html>

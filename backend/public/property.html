@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | Sito Real Estate</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <!-- Lightbox for gallery -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/css/lightgallery-bundle.min.css">
+    <!-- Add Playfair Display font for logo -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Zillow-like styles */
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.5;
+            color: #2a2a33;
+            background-color: #f9f9fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #111;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .beta-tag {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            text-transform: uppercase;
+        }
+
+        .header-container { 
+            background: #f5f3ee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem 2rem;
+            min-height: 90px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-profile:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .btn-profile i {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-top: -4px;
+        }
+        
+        main {
+            padding-bottom: 40px;
+        }
+        
+        .property-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-top: 20px;
+        }
+        
+        /* Back to search link */
+        .back-to-search {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #0d4599;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .back-to-search i {
+            margin-right: 8px;
+        }
+        
+        /* Photo Gallery */
+        .photo-gallery {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .main-photo {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+                .main-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            overflow-x: auto;
+            padding: 4px;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+            border: 2px solid #0d4599;
+        }
+
+        .thumbnail:hover {
+            opacity: 1;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-nav:hover {
+            background: white;
+        }
+
+        .gallery-nav.prev {
+            left: 16px;
+        }
+
+        .gallery-nav.next {
+            right: 16px;
+        }
+
+        .off-market-watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .off-market-watermark::before {
+            content: "OFF MARKET";
+            font-size: 48px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 30px;
+            border-radius: 8px;
+            letter-spacing: 2px;
+            transform: rotate(-15deg);
+        }
+        
+        .gallery-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .gallery-button {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .gallery-button i {
+            margin-right: 6px;
+        }
+        
+        /* Property Header */
+        .property-header {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .property-price {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #2a2a33;
+            display: flex;
+            align-items: center;
+        }
+        
+        .listing-status {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        
+        .off-market {
+            background-color: #f0f0f0;
+            color: #71727a;
+        }
+        
+        .on-market {
+            background-color: #d4f8d3;
+            color: #2a9d29;
+        }
+        
+        .estimated-label {
+            font-size: 16px;
+            font-weight: normal;
+            color: #71727a;
+            margin-left: 8px;
+        }
+        
+        .property-address {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2a2a33;
+        }
+        
+        .property-specs {
+            display: flex;
+            gap: 15px;
+            font-size: 16px;
+            color: #2a2a33;
+            margin-bottom: 20px;
+        }
+        
+        .spec-divider {
+            color: #e0e0e0;
+        }
+        
+        /* Actions Row */
+        .property-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .action-button {
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .action-button i {
+            margin-right: 8px;
+        }
+        
+        .primary-action {
+            background-color: #0d4599;
+            color: white;
+            border: none;
+        }
+        
+        .secondary-action {
+            background-color: white;
+            color: #0d4599;
+            border: 1px solid #0d4599;
+        }
+        
+        /* Content Columns */
+        .property-details-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        /* Property Details */
+        .property-details {
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .details-section {
+            padding: 24px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .details-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2a2a33;
+        }
+        
+        /* Overview facts */
+        .facts-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .fact-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .fact-label {
+            font-size: 14px;
+            color: #6e6e6e;
+        }
+        
+        .fact-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2a2a33;
+        }
+        
+        /* Description */
+        .property-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #2a2a33;
+        }
+        
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .feature-item {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .feature-item i {
+            color: #0d4599;
+            margin-right: 8px;
+        }
+        
+        /* Map */
+        .map-container {
+            height: 300px;
+            margin-top: 15px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        /* Contact card */
+        .contact-card {
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 24px;
+            position: sticky;
+            top: 80px;
+        }
+        
+        .off-market-notice {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #71727a;
+        }
+        
+        .off-market-notice h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #2a2a33;
+        }
+        
+        .sold-date {
+            font-weight: 600;
+            color: #2a2a33;
+        }
+        
+        .contact-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2a2a33;
+        }
+        
+        .contact-form {
+            margin-top: 15px;
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #6e6e6e;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .contact-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .contact-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0d4599;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        /* Similar homes section */
+        .similar-properties {
+            margin-top: 40px;
+        }
+        
+        .similar-homes-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2a2a33;
+        }
+        
+        .homes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .home-card {
+            background-color: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .home-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .home-card-content {
+            padding: 15px;
+        }
+        
+        .home-card-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2a2a33;
+            margin-bottom: 5px;
+        }
+        
+        .home-card-specs {
+            display: flex;
+            gap: 10px;
+            font-size: 14px;
+            color: #2a2a33;
+            margin-bottom: 5px;
+        }
+        
+        .home-card-address {
+            font-size: 14px;
+            color: #6e6e6e;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .property-details-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .contact-card {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-photo {
+                height: 350px;
+            }
+            
+            .facts-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Similar Properties */
+        .similar-properties {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e1e1e1;
+        }
+        
+        .similar-properties h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .property-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .property-card-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .property-card-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+        
+        .property-card-status.active {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .property-card-status.off-market {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        
+        .property-card-info {
+            padding: 15px;
+        }
+        
+        .property-card-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2a2a2a;
+            margin-bottom: 8px;
+        }
+        
+        .property-card-specs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .property-card-address {
+            font-size: 14px;
+            color: #777;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .btn-create-listing {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-create-listing:hover {
+            background-color: #27ae60;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filter-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #0d4599;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #0d4599;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider.round {
+            border-radius: 24px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        
+        .toggle-label {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <a href="/index.html" class="logo-link">
+                <span class="logo-text">SITO<span class="beta-tag">(BETA)</span></span>
+            </a>
+            <div class="user-actions">
+                <button class="btn-profile"><i class="fas fa-user"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="property-content">
+            <!-- Back to search link -->
+            <a href="javascript:history.back()" class="back-to-search">
+                <i class="fas fa-arrow-left"></i> Back to search
+            </a>
+            
+            <!-- Photo Gallery -->
+            <div id="property-gallery" class="photo-gallery">
+                <div class="main-photo">
+                    <img id="mainImage" src="" alt="Property main view">
+                </div>
+                <div id="thumbnailStrip" class="thumbnail-strip">
+                    <!-- Thumbnails will be added here -->
+                </div>
+                <div class="gallery-controls">
+                    <button class="gallery-nav prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-nav next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="gallery-button btn-view-all-photos">
+                        <i class="fas fa-th"></i> See all photos
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Property Header -->
+            <div class="property-header">
+                <div class="property-price">
+                    <span id="propertyPrice">$0</span>
+                    <span class="estimated-label" id="priceType">(Estimated)</span>
+                    <span class="listing-status off-market" id="listingStatus">Off Market</span>
+                </div>
+                <div class="property-address" id="propertyAddress">Address, City, State</div>
+                <div class="property-specs">
+                    <span id="propertyBeds">0</span> beds
+                    <span class="spec-divider">|</span>
+                    <span id="propertyBaths">0</span> baths
+                    <span class="spec-divider">|</span>
+                    <span id="propertyArea">0</span> m²
+                </div>
+            </div>
+            
+            <!-- Actions Row -->
+            <div class="property-actions">
+                <button class="action-button primary-action">
+                    <i class="fas fa-phone"></i> Contact agent
+                </button>
+                <button class="action-button secondary-action" id="btnSaveProperty">
+                    <i class="far fa-heart"></i> Save
+                </button>
+                <button class="action-button secondary-action">
+                    <i class="fas fa-share"></i> Share
+                </button>
+            </div>
+            
+            <!-- Property Content -->
+            <div class="property-details-container" style="display: flex; flex-direction: row; gap: 30px; align-items: flex-start;">
+                <!-- Main Details (now much wider) -->
+                <div class="main-details" style="flex:4; min-width:0; display: flex; flex-direction: column; gap: 24px;">
+                    <!-- Property Title -->
+                    <h1 id="propertyTitle"></h1>
+                    <!-- Row 1: Overview & Description side by side -->
+                    <div class="details-row" style="display: flex; gap: 32px; flex-wrap: wrap;">
+                        <div class="property-details" style="flex:1; min-width:260px;">
+                            <div class="details-section">
+                                <h2 class="section-title">Overview</h2>
+                                <div class="facts-list">
+                                    <div class="fact-item">
+                                        <span class="fact-label">Property Type</span>
+                                        <span class="fact-value" id="propertyType">Single Family</span>
+                                    </div>
+                                    <div class="fact-item">
+                                        <span class="fact-label">Year Built</span>
+                                        <span class="fact-value" id="propertyYear">2000</span>
+                                    </div>
+                                    <div class="fact-item">
+                                        <span class="fact-label">Lot Size</span>
+                                        <span class="fact-value" id="propertyLot">0 acres</span>
+                                    </div>
+                                    <div class="fact-item">
+                                        <span class="fact-label">MLS #</span>
+                                        <span class="fact-value" id="propertyMLS">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="property-details" style="flex:2; min-width:320px;">
+                            <div class="details-section">
+                                <h2 class="section-title">Description</h2>
+                                <div class="property-description" id="propertyDescription">
+                                    Property description will appear here.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 2: Features & Amenities (full width) -->
+                    <div class="details-row" style="width:100%;">
+                        <div class="property-details" style="width:100%;">
+                            <div class="details-section">
+                                <h2 class="section-title">Features & Amenities</h2>
+                                <div class="features-grid" id="featuresGrid">
+                                    <!-- Features will be added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 3: Property History (full width) -->
+                    <div class="details-row" style="width:100%;">
+                        <div class="property-details" style="width:100%;">
+                            <div class="details-section">
+                                <h2 class="section-title">Property History</h2>
+                                <div style="font-size:15px; color:#444;">
+                                    <div><strong>Tax Valuation:</strong> <span id="taxValuation">(Coming soon)</span></div>
+                                    <div><strong>Tax History:</strong> <span id="taxHistory">(Coming soon)</span></div>
+                                    <div><strong>Sales History:</strong> <span id="salesHistory">(Coming soon)</span></div>
+                                    <div><strong>Clear Title:</strong> <span id="clearTitle">(Coming soon)</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 4: Map (full width) -->
+                    <div class="details-row" style="width:100%;">
+                        <div class="property-details" style="width:100%;">
+                            <div class="details-section">
+                                <h2 class="section-title">Location</h2>
+                                <div id="propertyMap" class="map-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column (now much smaller) -->
+                <div class="right-column custom-right-column" style="flex:1; min-width:260px; max-width:340px; display: flex; flex-direction: column; gap: 24px;">
+                    <div class="contact-card no-sticky" style="width:100%; margin-bottom:0;">
+                        <div class="off-market-notice" id="offMarketNotice">
+                            <h4>This property is currently off market</h4>
+                            <p>Last sold on <span class="sold-date" id="soldDate">Unknown</span></p>
+                            <p>This property is not currently for sale. The description, price, and other information shown may be out of date.</p>
+                            <button id="createListingBtn" class="btn-create-listing">Create Listing</button>
+                        </div>
+                        
+                        <h3 class="contact-title">Contact Agent for Similar Properties</h3>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+                                <img id="agentPhoto" src="" alt="Agent" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <p style="font-weight: 600; margin: 0; font-size: 16px;" id="agentName">Agent Name</p>
+                                <p style="margin: 4px 0 0; font-size: 14px; color: #6e6e6e;" id="agentCompany">Sito Real Estate</p>
+                            </div>
+                        </div>
+                        
+                        <div style="font-size: 14px; margin-bottom: 20px;">
+                            <p style="margin: 0; color: #6e6e6e;"><i class="fas fa-phone" style="color: #0d4599; margin-right: 8px;"></i><span id="agentPhone">+506 1234-5678</span></p>
+                        </div>
+                        
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" required>I am interested in this property and would like to schedule a viewing.</textarea>
+                            </div>
+                            <button type="submit">Contact Agent</button>
+                        </form>
+                    </div>
+                    <!-- Loan Calculator Section -->
+                    <div class="contact-card no-sticky" style="width:100%; margin-bottom:0;">
+                        <h3 class="contact-title">Loan Calculator</h3>
+                        <form id="loanCalculatorForm">
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount</label>
+                                <input type="number" id="loanAmount" placeholder="Enter amount" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="interestRate">Interest Rate (%)</label>
+                                <input type="number" id="interestRate" placeholder="e.g. 6.5" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanYears">Years</label>
+                                <input type="number" id="loanYears" placeholder="e.g. 30" required>
+                            </div>
+                            <button type="submit" class="btn-create-listing">Calculate</button>
+                        </form>
+                        <div id="loanResult" style="margin-top: 12px; font-size: 16px; color: #2563eb;"></div>
+                    </div>
+                    <!-- Lawyer Contact Section -->
+                    <div class="contact-card no-sticky" style="width:100%; margin-bottom:0;">
+                        <h3 class="contact-title">Contact a Lawyer</h3>
+                        <button id="openLawyerFormBtn" class="btn-create-listing" type="button">Request Legal Help</button>
+                        <form id="lawyerContactForm" style="display:none; margin-top: 18px;">
+                            <div class="form-group">
+                                <label for="lawyerName">Your Name</label>
+                                <input type="text" id="lawyerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lawyerEmail">Your Email</label>
+                                <input type="email" id="lawyerEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lawyerMessage">Message</label>
+                                <textarea id="lawyerMessage" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-create-listing">Send to Lawyer</button>
+                        </form>
+                        <div id="lawyerFormResult" style="margin-top: 10px; color: #2563eb;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Similar Homes Section -->
+            <div class="similar-properties">
+                <div class="section-header">
+                    <h2 class="section-title">Similar Properties</h2>
+                    <div class="filter-controls">
+                        <label class="switch">
+                            <input type="checkbox" id="offMarketToggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label">Off-market only</span>
+                    </div>
+                </div>
+                <div class="properties-grid" id="similarProperties">
+                    <!-- Similar properties will be added dynamically -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Sito</h3>
+                <p>Your source of trust for the real estate market.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="map.html">Properties</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@sito.com</p>
+                <p>Phone: +506 1234 5678</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Domus Impresa S.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load scripts in correct order -->
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+    <!-- Lightgallery -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/lightgallery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script>
+    
+    <!-- App scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/property.js"></script>
+    <script>
+        // Load property when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Get property ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('id');
+            
+            if (!propertyId) {
+                console.error('No property ID provided');
+                return;
+            }
+
+            // Show loading state
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) loadingIndicator.style.display = 'flex';
+
+            try {
+                // Load property data
+                const property = await loadPropertyWithRegistry(propertyId);
+                
+                if (!property) {
+                    console.error('Property not found');
+                    if (loadingIndicator) loadingIndicator.style.display = 'none';
+                    return;
+                }
+
+                // Populate property details
+                populatePropertyDetails(property);
+                
+                // Initialize map
+                initializePropertyMap(property);
+                
+                // Setup save button
+                setupSaveButton(propertyId);
+                
+                // Load similar properties
+                loadSimilarProperties(property);
+            } catch (error) {
+                console.error('Error loading property:', error);
+            } finally {
+                // Hide loading state
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="js/profile.js"></script>
+</body>
+</html> 

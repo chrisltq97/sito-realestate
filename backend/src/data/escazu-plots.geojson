@@ -1,0 +1,648 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "101",
+        "area": 26500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Centro Comercial Avenida Escazú"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1431, 9.9381],
+          [-84.1428, 9.9384],
+          [-84.1424, 9.9384],
+          [-84.1420, 9.9382],
+          [-84.1421, 9.9379],
+          [-84.1424, 9.9377],
+          [-84.1427, 9.9378],
+          [-84.1431, 9.9381]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "102",
+        "area": 18500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Hospital CIMA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1408, 9.9382],
+          [-84.1407, 9.9387],
+          [-84.1403, 9.9386],
+          [-84.1399, 9.9385],
+          [-84.1398, 9.9382],
+          [-84.1400, 9.9378],
+          [-84.1404, 9.9378],
+          [-84.1408, 9.9382]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "103",
+        "area": 32000,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Multiplaza Escazú"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1437, 9.9378],
+          [-84.1432, 9.9381],
+          [-84.1427, 9.9378],
+          [-84.1428, 9.9375],
+          [-84.1430, 9.9372],
+          [-84.1434, 9.9372],
+          [-84.1439, 9.9374],
+          [-84.1437, 9.9378]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "104",
+        "area": 21800,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Distrito Cuatro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1427, 9.9388],
+          [-84.1424, 9.9390],
+          [-84.1420, 9.9390],
+          [-84.1416, 9.9389],
+          [-84.1416, 9.9386],
+          [-84.1419, 9.9384],
+          [-84.1424, 9.9384],
+          [-84.1428, 9.9384],
+          [-84.1427, 9.9388]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "105",
+        "area": 19500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Plaza Tempo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1420, 9.9382],
+          [-84.1419, 9.9384],
+          [-84.1416, 9.9386],
+          [-84.1413, 9.9385],
+          [-84.1410, 9.9382],
+          [-84.1411, 9.9379],
+          [-84.1415, 9.9378],
+          [-84.1418, 9.9379],
+          [-84.1421, 9.9379],
+          [-84.1420, 9.9382]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "106",
+        "area": 24500,
+        "zona": "Mixto",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Hotel y Residencias"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1434, 9.9386],
+          [-84.1432, 9.9390],
+          [-84.1427, 9.9388],
+          [-84.1428, 9.9384],
+          [-84.1432, 9.9381],
+          [-84.1437, 9.9378],
+          [-84.1438, 9.9382],
+          [-84.1434, 9.9386]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "107",
+        "area": 28500,
+        "zona": "Residencial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Torres Residenciales"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1424, 9.9377],
+          [-84.1421, 9.9379],
+          [-84.1418, 9.9379],
+          [-84.1415, 9.9378],
+          [-84.1413, 9.9375],
+          [-84.1415, 9.9372],
+          [-84.1420, 9.9371],
+          [-84.1424, 9.9373],
+          [-84.1427, 9.9378],
+          [-84.1424, 9.9377]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "108",
+        "area": 17800,
+        "zona": "Mixto",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Oficinas y Comercio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1411, 9.9379],
+          [-84.1410, 9.9382],
+          [-84.1408, 9.9382],
+          [-84.1404, 9.9378],
+          [-84.1407, 9.9375],
+          [-84.1411, 9.9374],
+          [-84.1415, 9.9372],
+          [-84.1413, 9.9375],
+          [-84.1411, 9.9379]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "109",
+        "area": 34000,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Centro Corporativo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1439, 9.9374],
+          [-84.1434, 9.9372],
+          [-84.1430, 9.9372],
+          [-84.1427, 9.9369],
+          [-84.1430, 9.9365],
+          [-84.1434, 9.9366],
+          [-84.1440, 9.9369],
+          [-84.1441, 9.9372],
+          [-84.1439, 9.9374]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "110",
+        "area": 23500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Plaza Roble"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1438, 9.9382],
+          [-84.1437, 9.9378],
+          [-84.1439, 9.9374],
+          [-84.1441, 9.9372],
+          [-84.1445, 9.9374],
+          [-84.1446, 9.9379],
+          [-84.1444, 9.9382],
+          [-84.1438, 9.9382]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "111",
+        "area": 21000,
+        "zona": "Residencial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Condominio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1424, 9.9390],
+          [-84.1427, 9.9388],
+          [-84.1432, 9.9390],
+          [-84.1430, 9.9394],
+          [-84.1425, 9.9393],
+          [-84.1424, 9.9390]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "112",
+        "area": 15500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Strip Center"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1420, 9.9390],
+          [-84.1424, 9.9390],
+          [-84.1425, 9.9393],
+          [-84.1422, 9.9396],
+          [-84.1418, 9.9394],
+          [-84.1416, 9.9389],
+          [-84.1420, 9.9390]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "113",
+        "area": 16500,
+        "zona": "Comercial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Centro Médico CIMA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1413, 9.9385],
+          [-84.1416, 9.9386],
+          [-84.1416, 9.9389],
+          [-84.1413, 9.9392],
+          [-84.1410, 9.9390],
+          [-84.1407, 9.9387],
+          [-84.1408, 9.9382],
+          [-84.1410, 9.9382],
+          [-84.1413, 9.9385]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "114",
+        "area": 18800,
+        "zona": "Residencial",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Apartamentos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1418, 9.9394],
+          [-84.1422, 9.9396],
+          [-84.1420, 9.9399],
+          [-84.1416, 9.9400],
+          [-84.1413, 9.9397],
+          [-84.1413, 9.9392],
+          [-84.1416, 9.9389],
+          [-84.1418, 9.9394]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "115",
+        "area": 23500,
+        "zona": "Mixto",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Edificio de Usos Mixtos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1430, 9.9394],
+          [-84.1432, 9.9390],
+          [-84.1434, 9.9386],
+          [-84.1438, 9.9387],
+          [-84.1440, 9.9390],
+          [-84.1437, 9.9395],
+          [-84.1433, 9.9397],
+          [-84.1430, 9.9394]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "116",
+        "area": 26000,
+        "zona": "Mixto",
+        "distrito": "San Rafael",
+        "owner": "Privado",
+        "uso": "Centro Deportivo y Comercial"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1438, 9.9387],
+          [-84.1434, 9.9386],
+          [-84.1438, 9.9382],
+          [-84.1444, 9.9382],
+          [-84.1447, 9.9384],
+          [-84.1445, 9.9389],
+          [-84.1440, 9.9390],
+          [-84.1438, 9.9387]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "201",
+        "area": 18200,
+        "zona": "Residencial",
+        "distrito": "San Antonio",
+        "owner": "Privado",
+        "uso": "Condominio Los Laureles"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1505, 9.9205],
+          [-84.1510, 9.9210],
+          [-84.1508, 9.9215],
+          [-84.1503, 9.9218],
+          [-84.1498, 9.9215],
+          [-84.1496, 9.9210],
+          [-84.1498, 9.9206],
+          [-84.1505, 9.9205]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "202",
+        "area": 15800,
+        "zona": "Residencial",
+        "distrito": "San Antonio",
+        "owner": "Privado",
+        "uso": "Residencial San Antonio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1525, 9.9195],
+          [-84.1530, 9.9195],
+          [-84.1532, 9.9200],
+          [-84.1530, 9.9205],
+          [-84.1525, 9.9205],
+          [-84.1522, 9.9200],
+          [-84.1525, 9.9195]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "203",
+        "area": 12500,
+        "zona": "Comercial",
+        "distrito": "San Antonio",
+        "owner": "Privado",
+        "uso": "Plaza Comercial San Antonio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1515, 9.9220],
+          [-84.1518, 9.9223],
+          [-84.1520, 9.9228],
+          [-84.1517, 9.9232],
+          [-84.1512, 9.9232],
+          [-84.1510, 9.9228],
+          [-84.1512, 9.9223],
+          [-84.1515, 9.9220]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "204",
+        "area": 19500,
+        "zona": "Mixto",
+        "distrito": "San Antonio",
+        "owner": "Público",
+        "uso": "Escuela San Antonio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1495, 9.9230],
+          [-84.1500, 9.9235],
+          [-84.1498, 9.9240],
+          [-84.1493, 9.9243],
+          [-84.1488, 9.9240],
+          [-84.1487, 9.9235],
+          [-84.1490, 9.9232],
+          [-84.1495, 9.9230]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "301",
+        "area": 24500,
+        "zona": "Comercial",
+        "distrito": "Escazú Centro",
+        "owner": "Público",
+        "uso": "Municipalidad de Escazú"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1395, 9.9175],
+          [-84.1393, 9.9180],
+          [-84.1388, 9.9182],
+          [-84.1383, 9.9180],
+          [-84.1382, 9.9175],
+          [-84.1385, 9.9170],
+          [-84.1390, 9.9168],
+          [-84.1395, 9.9175]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "302",
+        "area": 18500,
+        "zona": "Comercial",
+        "distrito": "Escazú Centro",
+        "owner": "Privado",
+        "uso": "Plaza Central Escazú"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1375, 9.9190],
+          [-84.1370, 9.9193],
+          [-84.1365, 9.9190],
+          [-84.1363, 9.9185],
+          [-84.1368, 9.9183],
+          [-84.1373, 9.9185],
+          [-84.1375, 9.9190]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "303",
+        "area": 21000,
+        "zona": "Residencial",
+        "distrito": "Escazú Centro",
+        "owner": "Privado",
+        "uso": "Condominio Central"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1400, 9.9155],
+          [-84.1405, 9.9158],
+          [-84.1408, 9.9163],
+          [-84.1405, 9.9168],
+          [-84.1400, 9.9170],
+          [-84.1395, 9.9168],
+          [-84.1393, 9.9163],
+          [-84.1395, 9.9158],
+          [-84.1400, 9.9155]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "304",
+        "area": 16500,
+        "zona": "Mixto",
+        "distrito": "Escazú Centro",
+        "owner": "Público",
+        "uso": "Parque Central Escazú"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1385, 9.9190],
+          [-84.1390, 9.9190],
+          [-84.1395, 9.9193],
+          [-84.1395, 9.9198],
+          [-84.1390, 9.9200],
+          [-84.1385, 9.9198],
+          [-84.1380, 9.9193],
+          [-84.1385, 9.9190]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "401",
+        "area": 850000,
+        "zona": "Delimitación",
+        "distrito": "San Rafael",
+        "owner": "Municipalidad",
+        "uso": "Distrito San Rafael"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1500, 9.9450],
+          [-84.1350, 9.9450],
+          [-84.1350, 9.9300],
+          [-84.1500, 9.9300],
+          [-84.1500, 9.9450]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "402",
+        "area": 780000,
+        "zona": "Delimitación",
+        "distrito": "San Antonio",
+        "owner": "Municipalidad",
+        "uso": "Distrito San Antonio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1600, 9.9300],
+          [-84.1450, 9.9300],
+          [-84.1450, 9.9150],
+          [-84.1600, 9.9150],
+          [-84.1600, 9.9300]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "403",
+        "area": 720000,
+        "zona": "Delimitación",
+        "distrito": "Escazú Centro",
+        "owner": "Municipalidad",
+        "uso": "Distrito Escazú Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-84.1450, 9.9250],
+          [-84.1300, 9.9250],
+          [-84.1300, 9.9100],
+          [-84.1450, 9.9100],
+          [-84.1450, 9.9250]
+        ]]
+      }
+    }
+  ]
+} 

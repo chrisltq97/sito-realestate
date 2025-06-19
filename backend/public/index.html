@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sito - Real Estate Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { background: #f5f3ee; }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #111;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .beta-tag {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            text-transform: uppercase;
+        }
+        .header-container { 
+            background: #f5f3ee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem 2rem;
+            min-height: 90px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .btn-profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-profile:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .btn-profile i {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-top: -4px;
+        }
+        .home-featured {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .home-featured h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #111;
+            margin-bottom: 2rem;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .home-featured h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background-color: #111;
+        }
+        .featured-listings {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-container">
+            <a href="/index.html" class="logo-link">
+                <span class="logo-text">SITO<span class="beta-tag">(BETA)</span></span>
+            </a>
+            <div class="user-actions">
+                <button class="btn-profile"><i class="fas fa-user"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="search-container hero-search">
+                    <form class="search-input-wrapper" action="map.html" method="get">
+                        <input type="text" name="q" placeholder="Search by area, ID, or keyword..." required>
+                        <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section class="home-featured">
+            <h2>Featured Properties</h2>
+            <div id="featuredProperties" class="featured-properties-grid">
+                <!-- Property cards will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Sito</h3>
+                <p>Your source of trust for the real estate market.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="map.html">Properties</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@sito.com</p>
+                <p>Phone: +506 1234 5678</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Domus Impresa S.A. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load our scripts in correct order -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/init-supabase.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html> 

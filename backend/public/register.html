@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOMUS - Register Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <a href="index.html" class="logo">DOMUS</a>
+    </header>
+
+    <!-- Registration Form -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <h2 class="auth-title">Create an Account</h2>
+                
+                <div class="social-login">
+                    <button class="social-btn google-btn" onclick="handleGoogleSignup()">
+                        <img src="images/icons/google.svg" alt="Google">
+                        Continue with Google
+                    </button>
+                    <button class="social-btn facebook-btn" onclick="handleFacebookSignup()">
+                        <img src="images/icons/facebook.svg" alt="Facebook">
+                        Continue with Facebook
+                    </button>
+                    <button class="social-btn apple-btn" onclick="handleAppleSignup()">
+                        <img src="images/icons/apple.svg" alt="Apple">
+                        Continue with Apple
+                    </button>
+                </div>
+                
+                <div class="divider">
+                    <span>or</span>
+                </div>
+                
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="password-requirements">
+                            <p>Password must contain at least:</p>
+                            <ul>
+                                <li>8 characters</li>
+                                <li>One uppercase letter</li>
+                                <li>One number</li>
+                                <li>One special character</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div class="form-group terms-checkbox">
+                        <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                        <label for="termsAgreement">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                </form>
+                
+                <div class="auth-footer">
+                    Already have an account? <a href="#" onclick="redirectToLogin()">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>DOMUS</h3>
+                    <p>Your trusted partner in Costa Rica real estate. Finding your perfect property made simple.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="map.html">Property Search</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Escazú, San José, Costa Rica</p>
+                    <p><i class="fas fa-phone"></i> +506 2289-0176</p>
+                    <p><i class="fas fa-envelope"></i> info@domus.cr</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 DOMUS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('registerForm');
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const termsAgreement = document.getElementById('termsAgreement').checked;
+                
+                // Simple validation
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                if (!termsAgreement) {
+                    alert('You must agree to the terms of service');
+                    return;
+                }
+                
+                // Here you would normally send the registration data to your backend
+                // For now, just show an alert and redirect to index
+                alert(`Account created for ${firstName} ${lastName}. You can now log in.`);
+                window.location.href = 'index.html';
+            });
+        });
+        
+        // Social signup handlers
+        function handleGoogleSignup() {
+            alert('Google signup will be implemented');
+        }
+        
+        function handleFacebookSignup() {
+            alert('Facebook signup will be implemented');
+        }
+        
+        function handleAppleSignup() {
+            alert('Apple signup will be implemented');
+        }
+        
+        // Redirect to login
+        function redirectToLogin() {
+            // Open login modal on index page
+            window.location.href = 'index.html';
+            // We'd normally trigger the login modal here, but that would require 
+            // URL parameters and JS to open the modal on page load
+        }
+    </script>
+</body>
+</html> 

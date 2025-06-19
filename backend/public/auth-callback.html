@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation - Real Estate Platform</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+</head>
+<body>
+    <div id="message">Confirming your email...</div>
+
+    <script>
+        async function handleEmailConfirmation() {
+            try {
+                const supabase = window.initSupabase();
+                if (!supabase) {
+                    throw new Error('Failed to initialize Supabase client');
+                }
+
+                // Get the session
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    throw error;
+                }
+
+                if (session) {
+                    document.getElementById('message').textContent = 'Email confirmed! Redirecting to home page...';
+                    // Redirect to home page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    document.getElementById('message').textContent = 'Email confirmation failed. Please try again or contact support.';
+                }
+            } catch (error) {
+                console.error('Error during email confirmation:', error);
+                document.getElementById('message').textContent = 'An error occurred during email confirmation. Please try again or contact support.';
+            }
+        }
+
+        // Run on page load
+        handleEmailConfirmation();
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        #message {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+    </style>
+</body>
+</html> 

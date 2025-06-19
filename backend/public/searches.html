@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Searches | DOMUS Real Estate</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo">DOMUS</div>
+            </a>
+            <div class="user-actions">
+                <button class="btn-profile"><i class="fas fa-user"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-main">
+        <div class="searches-container">
+            <div class="page-header">
+                <h1>Saved Searches</h1>
+                <a href="profile.html" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Profile
+                </a>
+            </div>
+            
+            <div id="no-searches" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h2>No Saved Searches</h2>
+                <p>You haven't saved any searches yet. Try searching for properties and save your search criteria for future use.</p>
+                <a href="map.html" class="btn-primary">
+                    <i class="fas fa-search"></i> Search Properties
+                </a>
+            </div>
+            
+            <div id="searches-list" class="searches-list">
+                <!-- Searches will be loaded here dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Your trusted partner in Costa Rica real estate</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="map.html">Properties</a>
+                <a href="map.html">Map</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@domus.cr</p>
+                <p>Phone: +506 2289-0176</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('domus_user');
+            if (!isLoggedIn) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const user = JSON.parse(localStorage.getItem('domus_user'));
+            
+            // Check if user is an individual (not a seller)
+            if (user.accountType === 'seller') {
+                window.location.href = 'profile.html';
+                return;
+            }
+            
+            // Add sample saved searches if none exist
+            if (!user.savedSearches || user.savedSearches.length === 0) {
+                // For demo purposes, add some sample saved searches
+                user.savedSearches = [
+                    {
+                        id: '1',
+                        name: 'Apartments in Escazú',
+                        criteria: 'Property Type: Apartment, Location: Escazú, Price: $300,000 - $600,000',
+                        filters: {
+                            propertyType: 'apartment',
+                            location: 'Escazú',
+                            minPrice: 300000,
+                            maxPrice: 600000
+                        },
+                        dateCreated: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: '2',
+                        name: 'Houses with Pool',
+                        criteria: 'Property Type: House, Features: Pool, Min. Bedrooms: 3',
+                        filters: {
+                            propertyType: 'house',
+                            features: ['pool'],
+                            minBedrooms: 3
+                        },
+                        dateCreated: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+                
+                // Update localStorage
+                localStorage.setItem('domus_user', JSON.stringify(user));
+                
+                // Update users array
+                const users = JSON.parse(localStorage.getItem('domus_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === user.id);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].savedSearches = user.savedSearches;
+                    localStorage.setItem('domus_users', JSON.stringify(users));
+                }
+            }
+            
+            // Load saved searches
+            loadSavedSearches();
+        });
+        
+        function loadSavedSearches() {
+            const user = JSON.parse(localStorage.getItem('domus_user'));
+            const noSearchesEl = document.getElementById('no-searches');
+            const searchesList = document.getElementById('searches-list');
+            
+            if (!user.savedSearches || user.savedSearches.length === 0) {
+                noSearchesEl.style.display = 'flex';
+                searchesList.style.display = 'none';
+                return;
+            }
+            
+            noSearchesEl.style.display = 'none';
+            searchesList.style.display = 'block';
+            
+            // Clear existing content
+            searchesList.innerHTML = '';
+            
+            // Display saved searches
+            user.savedSearches.forEach(search => {
+                const searchCard = document.createElement('div');
+                searchCard.className = 'search-card';
+                searchCard.innerHTML = `
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="search-info">
+                        <h3>${search.name}</h3>
+                        <p>${search.criteria}</p>
+                        <small>Saved on ${new Date(search.dateCreated).toLocaleDateString()}</small>
+                    </div>
+                    <div class="search-actions">
+                        <button class="btn-primary" onclick="runSearch('${search.id}')">
+                            <i class="fas fa-search"></i> Run Search
+                        </button>
+                        <button class="btn-edit" onclick="editSearch('${search.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-delete" onclick="deleteSearch('${search.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                searchesList.appendChild(searchCard);
+            });
+        }
+        
+        function runSearch(searchId) {
+            const user = JSON.parse(localStorage.getItem('domus_user'));
+            const search = user.savedSearches.find(s => s.id === searchId);
+            
+            if (search) {
+                // In a real app, this would generate a URL with query parameters
+                // For demo purposes, just redirect to the map page
+                window.location.href = `map.html?searchId=${searchId}`;
+            }
+        }
+        
+        function editSearch(searchId) {
+            const user = JSON.parse(localStorage.getItem('domus_user'));
+            const search = user.savedSearches.find(s => s.id === searchId);
+            
+            if (search) {
+                // In a real app, this would open an edit modal or redirect to an edit page
+                // For demo purposes, just prompt for a new name
+                const newName = prompt('Enter a new name for this search:', search.name);
+                
+                if (newName && newName.trim() !== '') {
+                    // Update search name
+                    search.name = newName.trim();
+                    
+                    // Update localStorage
+                    localStorage.setItem('domus_user', JSON.stringify(user));
+                    
+                    // Update users array
+                    const users = JSON.parse(localStorage.getItem('domus_users') || '[]');
+                    const userIndex = users.findIndex(u => u.id === user.id);
+                    
+                    if (userIndex !== -1) {
+                        users[userIndex].savedSearches = user.savedSearches;
+                        localStorage.setItem('domus_users', JSON.stringify(users));
+                    }
+                    
+                    // Reload saved searches
+                    loadSavedSearches();
+                }
+            }
+        }
+        
+        function deleteSearch(searchId) {
+            if (confirm('Are you sure you want to delete this saved search?')) {
+                const user = JSON.parse(localStorage.getItem('domus_user'));
+                
+                // Remove search from saved list
+                user.savedSearches = user.savedSearches.filter(search => search.id !== searchId);
+                
+                // Update localStorage
+                localStorage.setItem('domus_user', JSON.stringify(user));
+                
+                // Update users array
+                const users = JSON.parse(localStorage.getItem('domus_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === user.id);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].savedSearches = user.savedSearches;
+                    localStorage.setItem('domus_users', JSON.stringify(users));
+                }
+                
+                // Reload saved searches
+                loadSavedSearches();
+            }
+        }
+        
+        // Helper function to redirect to map with a property ID
+        function goToPropertyOnMap(propertyId) {
+            window.location.href = `map.html?propertyId=${propertyId}`;
+        }
+    </script>
+</body>
+</html> 
