@@ -92,6 +92,8 @@ These files need to be generated using the scripts in the `scripts` directory or
 
 This project is licensed under the MIT License.
 
+<!-- Force redeploy -->
+
 ## Contact
 
 Your Name - your.email@example.com
