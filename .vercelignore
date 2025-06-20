@@ -1,0 +1,25 @@
+# Ignore local dependencies
+node_modules/
+backend/node_modules/
+server/node_modules/
+
+# Ignore Git files
+.git/
+
+# Ignore large data files and database files
+data/
+backend/public/data/
+scraped_data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore environment files and logs
+.env
+*.log
+
+# Ignore OS-generated files
+.DS_Store
+
+# Vercel project configuration
+.vercel/ 

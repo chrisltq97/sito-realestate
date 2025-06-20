@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Backend for Costa Rica Real Estate Platform",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "seed": "node src/scripts/seedData.js"
+    "seed": "node src/scripts/seedData.js",
+    "vercel-build": "echo 'Building...'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
