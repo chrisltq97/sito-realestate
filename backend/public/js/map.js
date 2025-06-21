@@ -225,7 +225,7 @@ async function loadAllMunicipalitiesData() {
 
     // 1. Fetch the live Escazú data URL from the database
     try {
-        console.log('Fetching live data URL from database...');
+        console.log('🔄 Fetching live data URL from database...');
         const { data: configData, error: configError } = await supabase
             .from('app_config')
             .select('value')
@@ -237,9 +237,11 @@ async function loadAllMunicipalitiesData() {
         }
 
         const escazuSourceUrl = configData.value;
-        console.log(`Fetching Escazú data from live URL: ${escazuSourceUrl}`);
+        // Add cache busting parameter
+        const cacheBustUrl = escazuSourceUrl + '?t=' + Date.now();
+        console.log(`📡 Fetching Escazú data from live URL: ${cacheBustUrl}`);
         
-        const escazuResponse = await fetch(escazuSourceUrl);
+        const escazuResponse = await fetch(cacheBustUrl);
         if (!escazuResponse.ok) {
             throw new Error(`Failed to fetch from ${escazuSourceUrl} with status ${escazuResponse.status}`);
         }
@@ -248,16 +250,19 @@ async function loadAllMunicipalitiesData() {
         // Debug: Check if we have the correct fields
         if (escazuData && escazuData.features && escazuData.features.length > 0) {
             const sampleFeature = escazuData.features[0];
-            console.log('DEBUG: Sample Escazú feature properties:', {
+            console.log('🔍 DEBUG: Sample Escazú feature properties:', {
                 finca_regist: sampleFeature.properties?.finca_regist,
                 id_finca_mun: sampleFeature.properties?.id_finca_mun,
-                allKeys: Object.keys(sampleFeature.properties || {})
+                allKeys: Object.keys(sampleFeature.properties || {}),
+                totalFeatures: escazuData.features.length
             });
         }
         
         if (escazuData && Array.isArray(escazuData.features)) {
+            console.log(`✅ Processing ${escazuData.features.length} Escazú features...`);
             const processed = processFeatures(escazuData.features, 'escazu');
             allFeatures = allFeatures.concat(processed);
+            console.log(`✅ Added ${processed.length} processed Escazú features to map`);
         }
 
     } catch (error) {
@@ -304,13 +309,14 @@ function processFeatures(features, municipalityName) {
             // For Escazú, check both finca_regist and id_finca_mun fields (from layer 2 data)
             finca_regi = p.finca_regist || p.id_finca_mun || p.finca_regi || '';
             
-            // Debug logging for first few features
-            if (Math.random() < 0.001) { // Log ~0.1% of features to avoid spam
-                console.log('DEBUG Escazú feature:', {
+            // Debug logging for first 5 features
+            if (features.indexOf(f) < 5) {
+                console.log(`🔍 DEBUG Escazú feature #${features.indexOf(f)}:`, {
                     finca_regist: p.finca_regist,
                     id_finca_mun: p.id_finca_mun,
                     final_finca_regi: finca_regi,
-                    municipalityName: municipalityName
+                    municipalityName: municipalityName,
+                    allProperties: Object.keys(p)
                 });
             }
         } else if (municipalityName === 'san-jose') {
@@ -621,6 +627,16 @@ function displayPropertiesOnMap(data) {
 function showPropertyDetails(propertyId, feature) {
     try {
         const props = feature.properties;
+        
+        // Debug logging to see what data we have
+        console.log('🔍 DEBUG showPropertyDetails called with:', {
+            propertyId: propertyId,
+            props_finca_regi: props.finca_regi,
+            props_id: props.id,
+            props_finca_regist: props.finca_regist,
+            props_id_finca_mun: props.id_finca_mun,
+            allPropsKeys: Object.keys(props)
+        });
         
         const popupContent = document.createElement('div');
         popupContent.className = 'property-popup';
