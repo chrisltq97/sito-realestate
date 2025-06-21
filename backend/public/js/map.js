@@ -326,87 +326,173 @@ function displayPropertiesOnMap(data) {
 
     try {
         // Remove existing layers
-        ['property-plots-fill', 'property-plots-outline'].forEach(layerId => {
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
             if (map.getLayer(layerId)) {
                 map.removeLayer(layerId);
             }
         });
-        if (map.getSource('property-plots')) {
-            map.removeSource('property-plots');
+        ['property-plots-large', 'property-plots-small'].forEach(sourceId => {
+            if (map.getSource(sourceId)) {
+                map.removeSource(sourceId);
+            }
+        });
+
+        // Separate features into large and small plots based on area
+        const largePlots = [];
+        const smallPlots = [];
+        
+        data.features.forEach(feature => {
+            const props = feature.properties || {};
+            const area = parseFloat(props.area) || 0;
+            
+            // If area is greater than 1000 sq meters, consider it a large plot
+            // Otherwise, it's likely an individual unit/apartment
+            if (area > 1000) {
+                largePlots.push(feature);
+            } else {
+                smallPlots.push(feature);
+            }
+        });
+
+        console.log(`Rendering ${largePlots.length} large plots and ${smallPlots.length} small plots`);
+
+        // Add large plots source and layers (drawn first, underneath)
+        if (largePlots.length > 0) {
+            map.addSource('property-plots-large', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: largePlots
+                },
+                generateId: true
+            });
+
+            // Large plots fill layer (semi-transparent)
+            map.addLayer({
+                id: 'property-plots-large-fill',
+                type: 'fill',
+                source: 'property-plots-large',
+                paint: {
+                    'fill-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FFD700',  // Gold when highlighted
+                        '#888888'   // Grey by default
+                    ],
+                    'fill-opacity': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        0.4,        // More visible when highlighted
+                        0.15        // Very subtle by default
+                    ]
+                }
+            });
+
+            // Large plots outline layer
+            map.addLayer({
+                id: 'property-plots-large-outline',
+                type: 'line',
+                source: 'property-plots-large',
+                paint: {
+                    'line-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FFD700',  // Gold when highlighted
+                        '#666666'   // Dark grey by default
+                    ],
+                    'line-width': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        3,  // Thicker when highlighted
+                        1   // Thin by default
+                    ]
+                }
+            });
         }
 
-        // Add the source
-        map.addSource('property-plots', {
-            type: 'geojson',
-            data: data,
-            generateId: true
-        });
+        // Add small plots source and layers (drawn on top)
+        if (smallPlots.length > 0) {
+            map.addSource('property-plots-small', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: smallPlots
+                },
+                generateId: true
+            });
 
-        // Add fill layer
-        map.addLayer({
-            id: 'property-plots-fill',
-            type: 'fill',
-            source: 'property-plots',
-            paint: {
-                'fill-color': [
-                    'case',
-                    ['boolean', ['feature-state', 'highlighted'], false],
-                    '#FFD700',  // Gold/yellow when highlighted
-                    '#888888'   // Grey by default
-                ],
-                'fill-opacity': [
-                    'case',
-                    ['boolean', ['feature-state', 'highlighted'], false],
-                    0.5,        // More visible when highlighted
-                    0.2         // Semi-transparent by default
-                ]
-            }
-        });
+            // Small plots fill layer (more visible)
+            map.addLayer({
+                id: 'property-plots-small-fill',
+                type: 'fill',
+                source: 'property-plots-small',
+                paint: {
+                    'fill-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FF6B35',  // Orange when highlighted
+                        '#4A90E2'   // Blue by default
+                    ],
+                    'fill-opacity': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        0.6,        // More visible when highlighted
+                        0.3         // Semi-transparent by default
+                    ]
+                }
+            });
 
-        // Add outline layer with thicker lines
-        map.addLayer({
-            id: 'property-plots-outline',
-            type: 'line',
-            source: 'property-plots',
-            paint: {
-                'line-color': [
-                    'case',
-                    ['boolean', ['feature-state', 'highlighted'], false],
-                    '#FFD700',  // Gold when highlighted
-                    '#888888'   // Dark grey by default
-                ],
-                'line-width': [
-                    'case',
-                    ['boolean', ['feature-state', 'highlighted'], false],
-                    3,  // Thicker when highlighted
-                    2   // Default width increased
-                ]
-            }
-        });
+            // Small plots outline layer
+            map.addLayer({
+                id: 'property-plots-small-outline',
+                type: 'line',
+                source: 'property-plots-small',
+                paint: {
+                    'line-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FF6B35',  // Orange when highlighted
+                        '#2E5C8A'   // Dark blue by default
+                    ],
+                    'line-width': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        3,  // Thicker when highlighted
+                        2   // Default width
+                    ]
+                }
+            });
+        }
 
         // Remove any existing click handlers
-        map.off('click', 'property-plots-fill');
-        map.off('click', 'property-plots-outline');
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
+            map.off('click', layerId);
+        });
         map.off('click');
 
-        // Click handler for properties
+        // Click handler for both large and small properties
         const handlePropertyClick = (e) => {
-            e.preventDefault(); // Prevent event from bubbling
+            e.preventDefault();
             
             if (e.features && e.features.length > 0) {
                 const feature = e.features[0];
+                const sourceId = feature.source;
                 
                 // Remove highlight from previously highlighted property
                 if (currentHighlightedProperty !== null) {
-                    map.setFeatureState(
-                        { source: 'property-plots', id: currentHighlightedProperty },
-                        { highlighted: false }
-                    );
+                    ['property-plots-large', 'property-plots-small'].forEach(source => {
+                        if (map.getSource(source)) {
+                            map.setFeatureState(
+                                { source: source, id: currentHighlightedProperty },
+                                { highlighted: false }
+                            );
+                        }
+                    });
                 }
                 
                 // Add highlight to clicked property
                 map.setFeatureState(
-                    { source: 'property-plots', id: feature.id },
+                    { source: sourceId, id: feature.id },
                     { highlighted: true }
                 );
                 
@@ -415,34 +501,43 @@ function displayPropertiesOnMap(data) {
             }
         };
 
-        // Add click handlers to both fill and outline layers
-        map.on('click', 'property-plots-fill', handlePropertyClick);
-        map.on('click', 'property-plots-outline', handlePropertyClick);
+        // Add click handlers to all layers
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
+            if (map.getLayer(layerId)) {
+                map.on('click', layerId, handlePropertyClick);
+            }
+        });
 
         // Click handler for map background
         map.on('click', (e) => {
-            // Check if we clicked on a property
             const features = map.queryRenderedFeatures(e.point, {
-                layers: ['property-plots-fill', 'property-plots-outline']
+                layers: ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline']
             });
             
-            // Only clear highlight if we didn't click on a property
             if (features.length === 0 && currentHighlightedProperty !== null) {
-                map.setFeatureState(
-                    { source: 'property-plots', id: currentHighlightedProperty },
-                    { highlighted: false }
-                );
+                ['property-plots-large', 'property-plots-small'].forEach(source => {
+                    if (map.getSource(source)) {
+                        map.setFeatureState(
+                            { source: source, id: currentHighlightedProperty },
+                            { highlighted: false }
+                        );
+                    }
+                });
                 currentHighlightedProperty = null;
             }
         });
 
         // Hover effects
-        map.on('mouseenter', 'property-plots-fill', () => {
-            map.getCanvas().style.cursor = 'pointer';
-        });
+        ['property-plots-large-fill', 'property-plots-small-fill'].forEach(layerId => {
+            if (map.getLayer(layerId)) {
+                map.on('mouseenter', layerId, () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
 
-        map.on('mouseleave', 'property-plots-fill', () => {
-            map.getCanvas().style.cursor = '';
+                map.on('mouseleave', layerId, () => {
+                    map.getCanvas().style.cursor = '';
+                });
+            }
         });
 
     } catch (error) {
