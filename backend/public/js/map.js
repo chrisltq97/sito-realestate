@@ -326,7 +326,7 @@ function displayPropertiesOnMap(data) {
 
     try {
         // Remove existing layers
-        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline', 'property-plots-small-labels'].forEach(layerId => {
             if (map.getLayer(layerId)) {
                 map.removeLayer(layerId);
             }
@@ -462,10 +462,61 @@ function displayPropertiesOnMap(data) {
                     ]
                 }
             });
+
+            // Add text labels for new Escazú plots (only for small plots with finca numbers from layer 2)
+            map.addLayer({
+                id: 'property-plots-small-labels',
+                type: 'symbol',
+                source: 'property-plots-small',
+                filter: [
+                    'all',
+                    ['==', ['get', 'municipality'], 'escazu'],
+                    ['has', 'finca_regi'],
+                    ['!=', ['get', 'finca_regi'], ''],
+                    ['>', ['zoom'], 16] // Only show labels when zoomed in enough
+                ],
+                layout: {
+                    'text-field': ['get', 'finca_regi'],
+                    'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+                    'text-size': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        16, 10,  // At zoom 16, text size 10
+                        20, 14   // At zoom 20, text size 14
+                    ],
+                    'text-anchor': 'center',
+                    'text-allow-overlap': false,
+                    'text-ignore-placement': false,
+                    'text-optional': true
+                },
+                paint: {
+                    'text-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FFFFFF',  // White when highlighted
+                        '#1F2937'   // Dark gray by default
+                    ],
+                    'text-halo-color': [
+                        'case',
+                        ['boolean', ['feature-state', 'highlighted'], false],
+                        '#FF6B35',  // Orange halo when highlighted
+                        '#FFFFFF'   // White halo by default
+                    ],
+                    'text-halo-width': 1.5,
+                    'text-opacity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        16, 0.7,  // At zoom 16, 70% opacity
+                        18, 1.0   // At zoom 18, 100% opacity
+                    ]
+                }
+            });
         }
 
         // Remove any existing click handlers
-        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline', 'property-plots-small-labels'].forEach(layerId => {
             map.off('click', layerId);
         });
         map.off('click');
@@ -502,7 +553,7 @@ function displayPropertiesOnMap(data) {
         };
 
         // Add click handlers to all layers
-        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline'].forEach(layerId => {
+        ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline', 'property-plots-small-labels'].forEach(layerId => {
             if (map.getLayer(layerId)) {
                 map.on('click', layerId, handlePropertyClick);
             }
@@ -511,7 +562,7 @@ function displayPropertiesOnMap(data) {
         // Click handler for map background
         map.on('click', (e) => {
             const features = map.queryRenderedFeatures(e.point, {
-                layers: ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline']
+                layers: ['property-plots-large-fill', 'property-plots-large-outline', 'property-plots-small-fill', 'property-plots-small-outline', 'property-plots-small-labels']
             });
             
             if (features.length === 0 && currentHighlightedProperty !== null) {
@@ -552,15 +603,23 @@ function showPropertyDetails(propertyId, feature) {
         
         const popupContent = document.createElement('div');
         popupContent.className = 'property-popup';
+        // Get the finca number - prioritize the actual finca_regi field
+        const fincaNumber = props.finca_regi || props.id || propertyId;
+        const displayTitle = fincaNumber ? `Finca #${fincaNumber}` : 'Property Details';
+        
         popupContent.innerHTML = `
             <div class="property-header">
                 <div class="header-content">
-                    <h3>${props.title || `Property #${props.finca_regi || propertyId}`}</h3>
+                    <h3>${props.title || displayTitle}</h3>
                     <span class="status-badge">Active</span>
                 </div>
             </div>
             <div class="property-info">
                 <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-id-card"></i>
+                        <span><strong>Finca:</strong> ${fincaNumber || 'N/A'}</span>
+                    </div>
                     <div class="info-item">
                         <i class="fas fa-ruler-combined"></i>
                         <span>${props.area ? props.area + ' m²' : 'N/A'}</span>
@@ -576,7 +635,7 @@ function showPropertyDetails(propertyId, feature) {
                 </div>
             </div>
             <div class="property-actions">
-                <a href="property.html?id=${props.finca_regi}" class="view-details-btn">
+                <a href="property.html?id=${fincaNumber}" class="view-details-btn">
                     View Details <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
