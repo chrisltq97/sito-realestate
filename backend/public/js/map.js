@@ -245,6 +245,16 @@ async function loadAllMunicipalitiesData() {
         }
         const escazuData = await escazuResponse.json();
         
+        // Debug: Check if we have the correct fields
+        if (escazuData && escazuData.features && escazuData.features.length > 0) {
+            const sampleFeature = escazuData.features[0];
+            console.log('DEBUG: Sample Escazú feature properties:', {
+                finca_regist: sampleFeature.properties?.finca_regist,
+                id_finca_mun: sampleFeature.properties?.id_finca_mun,
+                allKeys: Object.keys(sampleFeature.properties || {})
+            });
+        }
+        
         if (escazuData && Array.isArray(escazuData.features)) {
             const processed = processFeatures(escazuData.features, 'escazu');
             allFeatures = allFeatures.concat(processed);
@@ -293,6 +303,16 @@ function processFeatures(features, municipalityName) {
         if (municipalityName === 'escazu') {
             // For Escazú, check both finca_regist and id_finca_mun fields (from layer 2 data)
             finca_regi = p.finca_regist || p.id_finca_mun || p.finca_regi || '';
+            
+            // Debug logging for first few features
+            if (Math.random() < 0.001) { // Log ~0.1% of features to avoid spam
+                console.log('DEBUG Escazú feature:', {
+                    finca_regist: p.finca_regist,
+                    id_finca_mun: p.id_finca_mun,
+                    final_finca_regi: finca_regi,
+                    municipalityName: municipalityName
+                });
+            }
         } else if (municipalityName === 'san-jose') {
             finca_regi = p.FINCA || '';
         } else {
