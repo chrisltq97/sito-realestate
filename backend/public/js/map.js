@@ -214,65 +214,109 @@ function debounce(func, wait) {
 
 // Load all municipalities' data
 async function loadAllMunicipalitiesData() {
-    const sources = [
-        { name: 'escazu', url: '/data/escazu_plots.json' },
+    // Define local data sources for other municipalities
+    const localSources = [
         { name: 'san-jose', url: '/data/sanjose_plots.geojson' },
         { name: 'santa-ana', url: '/data/santaana_plots_proj4.geojson' }
     ];
+
+    let allFeatures = [];
+    const supabase = window.initSupabase(); // Ensure we have the client
+
+    // 1. Fetch the live Escazú data URL from the database
+    try {
+        console.log('Fetching live data URL from database...');
+        const { data: configData, error: configError } = await supabase
+            .from('app_config')
+            .select('value')
+            .eq('key', 'escazu_plots_url')
+            .single();
+
+        if (configError || !configData) {
+            throw new Error(configError?.message || 'Escazú config key not found in database.');
+        }
+
+        const escazuSourceUrl = configData.value;
+        console.log(`Fetching Escazú data from live URL: ${escazuSourceUrl}`);
+        
+        const escazuResponse = await fetch(escazuSourceUrl);
+        if (!escazuResponse.ok) {
+            throw new Error(`Failed to fetch from ${escazuSourceUrl} with status ${escazuResponse.status}`);
+        }
+        const escazuData = await escazuResponse.json();
+        
+        if (escazuData && Array.isArray(escazuData.features)) {
+            const processed = processFeatures(escazuData.features, 'escazu');
+            allFeatures = allFeatures.concat(processed);
+        }
+
+    } catch (error) {
+        console.error('❌ CRITICAL: Could not load live Escazú data.', error);
+        // You could add a fallback to a local file here if needed, but for now we'll fail loudly
+        // to indicate a configuration problem.
+        alert('Failed to load critical map data for Escazú. Please contact support.');
+    }
     
-    for (const src of sources) {
+    // 2. Load other local municipalities
+    for (const src of localSources) {
         try {
             const response = await fetch(src.url);
             if (response.ok) {
                 const data = await response.json();
                 if (data && Array.isArray(data.features)) {
-                    const processedFeatures = data.features.map(f => {
-                        const p = f.properties || {};
-                        let finca_regi = '';
-                        if (src.name === 'escazu') {
-                            finca_regi = p.finca_regi || '';
-                        } else if (src.name === 'san-jose') {
-                            finca_regi = p.FINCA || '';
-                        } else {
-                            finca_regi = p.finca || '';
-                        }
-                        const id = finca_regi || p.idpredio || f.id || '';
-                        return {
-                            ...f,
-                            id: id,
-                            properties: {
-                                ...f.properties,
-                                id: id,
-                                finca_regi: finca_regi,
-                                area: p.area_regis || p.area_catas || p.area || '',
-                                distrito: p.distrito || p.LOCALIZACION || src.name,
-                                zona: p.uso || '',
-                                uso: p.uso || '',
-                                owner: p.npersona || p.owner || '',
-                                status: 'off_market',
-                                pcatastro: p.pcatastro || '',
-                                ncuenta: p.ncuenta || '',
-                                municipality: src.name
-                            }
-                        };
-                    });
-
-                    if (!window.cachedGeoJSONData) {
-                        window.cachedGeoJSONData = { type: 'FeatureCollection', features: [] };
-                    }
-                    window.cachedGeoJSONData.features = window.cachedGeoJSONData.features.concat(processedFeatures);
-
-                    const currentData = { 
-                        type: 'FeatureCollection', 
-                        features: filterFeaturesByViewport(window.cachedGeoJSONData.features, window.mapInstance)
-                    };
-                    displayPropertiesOnMap(currentData);
+                    const processed = processFeatures(data.features, src.name);
+                    allFeatures = allFeatures.concat(processed);
                 }
             }
         } catch (error) {
             console.error('Error loading', src.name, error);
         }
     }
+
+    // 3. Update the map with all combined data
+    if (!window.cachedGeoJSONData) {
+        window.cachedGeoJSONData = { type: 'FeatureCollection', features: [] };
+    }
+    window.cachedGeoJSONData.features = allFeatures;
+
+    const currentData = { 
+        type: 'FeatureCollection', 
+        features: filterFeaturesByViewport(window.cachedGeoJSONData.features, window.mapInstance)
+    };
+    displayPropertiesOnMap(currentData);
+}
+
+function processFeatures(features, municipalityName) {
+    return features.map(f => {
+        const p = f.properties || {};
+        let finca_regi = '';
+        if (municipalityName === 'escazu') {
+            finca_regi = p.finca_regi || '';
+        } else if (municipalityName === 'san-jose') {
+            finca_regi = p.FINCA || '';
+        } else {
+            finca_regi = p.finca || '';
+        }
+        const id = finca_regi || p.idpredio || f.id || '';
+        return {
+            ...f,
+            id: id,
+            properties: {
+                ...f.properties,
+                id: id,
+                finca_regi: finca_regi,
+                area: p.area_regis || p.area_catas || p.area || '',
+                distrito: p.distrito || p.LOCALIZACION || municipalityName,
+                zona: p.uso || '',
+                uso: p.uso || '',
+                owner: p.npersona || p.owner || '',
+                status: 'off_market',
+                pcatastro: p.pcatastro || '',
+                ncuenta: p.ncuenta || '',
+                municipality: municipalityName
+            }
+        };
+    });
 }
 
 // Display properties on the map
@@ -313,8 +357,8 @@ function displayPropertiesOnMap(data) {
                 'fill-opacity': [
                     'case',
                     ['boolean', ['feature-state', 'highlighted'], false],
-                    0.3,        // More visible when highlighted
-                    0.1         // Subtle when not highlighted
+                    0.5,        // More visible when highlighted
+                    0.2         // Semi-transparent by default
                 ]
             }
         });
