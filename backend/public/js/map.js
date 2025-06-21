@@ -291,7 +291,8 @@ function processFeatures(features, municipalityName) {
         const p = f.properties || {};
         let finca_regi = '';
         if (municipalityName === 'escazu') {
-            finca_regi = p.finca_regi || '';
+            // For Escazú, check both finca_regist and id_finca_mun fields (from layer 2 data)
+            finca_regi = p.finca_regist || p.id_finca_mun || p.finca_regi || '';
         } else if (municipalityName === 'san-jose') {
             finca_regi = p.FINCA || '';
         } else {
